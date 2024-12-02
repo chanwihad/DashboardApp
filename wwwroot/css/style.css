@@ -1,0 +1,122 @@
+/* Sidebar Styling */
+.sidebar {
+    background-color: #2A3F54; /* Warna biru sidebar */
+    color: white;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -250px;
+    transition: all 0.3s ease;
+    padding-top: 5px;
+    overflow-y: auto; /* Memastikan konten tetap scrollable */
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+/* Styling untuk logo dan role di sidebar */
+.sidebar-header {
+    padding: 15px;
+    background-color: #2A3F54;
+}
+
+.sidebar-header img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.sidebar-header p {
+    margin-left: 10px;
+    color: white;
+}
+
+/* Mengubah warna saat hover di menu dropdown */
+.nav-link {
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.nav-link:hover {
+    background-color: #b8b816;
+}
+
+/* Styling untuk menu dropdown di sidebar */
+.nav-item.dropdown .dropdown-menu {
+    background-color: #2A3F54; /* Warna biru sidebar */
+    left: 100%; /* Memindahkan dropdown ke kanan sidebar */
+    margin-left: 10px; /* Memberi jarak sedikit ke kanan */
+    padding-left: 15px; /* Menambah padding kiri untuk memberi ruang antara teks dan sisi kiri dropdown */
+    border-radius: 5px; /* Membuat dropdown lebih rapi */
+}
+
+/* Untuk item dalam dropdown, memberi sedikit padding */
+.nav-item.dropdown .dropdown-item {
+    color: white;
+    padding: 10px 20px; /* Padding lebih lebar kiri-kanan */
+}
+
+.nav-item.dropdown .dropdown-item:hover {
+    background-color: #b8b816;
+}
+
+
+/* Garis pemisah di bawah header */
+hr.text-white {
+    margin: 0;
+    border-color: white;
+    margin-bottom: 15px; 
+}
+
+/* Memastikan dropdown memiliki margin-top untuk memberi jarak dari menu di atasnya */
+.collapse {
+    margin-top: 10px;
+}
+
+/* Atur overflow konten sidebar */
+.sidebar {
+    overflow-y: auto;
+}
+
+
+/* Styling untuk dropdown button */
+.dropdown-menu {
+    width: 200px;
+}
+
+.text-white-dropdown {
+    color: white !important;
+}
+
+.content-wrapper {
+    margin-left: 0; /* Tidak ada margin kiri saat sidebar tertutup */
+    transition: all 0.3s;
+}
+
+.content-wrapper.active {
+    margin-left: 250px; /* Memberikan margin kiri ketika sidebar terbuka */
+}
+
+.toggle-btn {
+    cursor: pointer;
+    font-size: 30px;
+    color: white;
+    background-color: #2A3F54;
+    border: none;
+}
+
+.navbar-custom {
+    background-color: #2A3F54 !important; /* Mengubah warna latar belakang navbar */
+    width: 100%;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Menghilangkan padding pada container-fluid */
+.container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}

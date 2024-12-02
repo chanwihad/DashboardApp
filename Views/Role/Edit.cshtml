@@ -1,0 +1,79 @@
+<form method="post">
+    <div class="form-group">
+        <label for="Name">Role Name</label>
+        <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="Description">Full Name</label>
+        <input type="text" class="form-control" id="Description" name="Description" value="@Model.Description" required />
+    </div>
+    <div class="form-group">
+        <label>Menus</label>
+        <div style="border: 1px solid #ccc; height: 200px; overflow-y: auto;">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select-all" />
+                            <label for="select-all">Select All</label>
+                        </th>
+                        <th>Menu Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var menu in ViewBag.Menus as List<DashboardApp.Models.Menu>)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="MenuIds" value="@menu.Id" id="menu-@menu.Id" 
+                                       @(Model.MenuIds?.Contains(menu.Id) ?? false ? "checked" : "") />
+                            </td>
+                            <td>
+                                <label for="menu-@menu.Id">@menu.Name</label>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+     <div class="form-group">
+        <label>Permissions</label>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="CanView" name="CanView" value="true" @(Model.CanView ? "checked" : "") />
+            <label class="form-check-label" for="CanView">Can View</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="CanCreate" name="CanCreate" value="true" @(Model.CanCreate ? "checked" : "") />
+            <label class="form-check-label" for="CanCreate">Can Create</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="CanUpdate" name="CanUpdate" value="true" @(Model.CanUpdate ? "checked" : "") />
+            <label class="form-check-label" for="CanUpdate">Can Update</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="CanDelete" name="CanDelete" value="true" @(Model.CanDelete ? "checked" : "") />
+            <label class="form-check-label" for="CanDelete">Can Delete</label>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+</form>
+
+
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style="color:red;">@ViewBag.ErrorMessage</p>
+}
+@if (ViewBag.Success != null)
+{
+    <p style="color:green;">@ViewBag.Success</p>
+}
+
+<script>
+    document.getElementById('select-all').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('input[name="MenuIds"]');
+        checkboxes.forEach(cb => cb.checked = this.checked);
+    });
+</script>

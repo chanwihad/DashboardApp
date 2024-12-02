@@ -1,0 +1,33 @@
+@model IEnumerable<DashboardApp.Models.Menu>
+
+@{
+    ViewData["Title"] = "Menu List";
+}
+<h1>Menu List</h1>
+<a href="/Menu/Create" class="btn btn-primary">Create New Menu</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var menus in Model.Select((item, index) => new { Item = item, Index = index + 1 }))
+        {
+            <tr>
+                <td>@menus.Index</td>
+                <td>@menus.Item.Name</td>
+                <td>@menus.Item.Description</td>
+                <td class="text-center">
+                    <a class="btn btn-success" href="@Url.Action("Edit", new { id = menus.Item.Id })">Edit</a> 
+                    <a href="@Url.Action("Delete", new { id = menus.Item.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this menu?')">Delete</a>
+                </td>
+            </tr>
+        }
+        
+    </tbody>
+</table>
+

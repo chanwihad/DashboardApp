@@ -1,0 +1,58 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Header -->
+        <div class="col-12 text-center mb-4">
+            <h1 class="display-5">Welcome to the Dashboard</h1>
+            <p class="text-muted">Here's a quick overview of your application</p>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Statistics Cards -->
+        <div class="col-md-4">
+            <div class="card text-white shadow mb-4" style="min-height: 150px; background-color: #2A3F54;">
+                <div class="card-body">
+                    <h5 class="card-title">Total Products</h5>
+                    <h2 class="card-text text-center mt-3">120</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white shadow mb-4" style="min-height: 150px; background-color: #2A3F54;">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <h2 class="card-text text-center mt-3">45</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white shadow mb-4" style="min-height: 150px; background-color: #2A3F54;">
+                <div class="card-body">
+                    <h5 class="card-title">Total Sales</h5>
+                    <h2 class="card-text text-center mt-3">$12,340</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Quick Links -->
+    @if (HttpContextAccessor.HttpContext.Session.GetString("Token") == null)
+    {
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <h4>Quick Actions</h4>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center gap-2">
+                <a href="/Auth/Login" class="btn btn-success btn-lg" style="width: 200px;">Login</a>
+                <a href="/Auth/Register" class="btn btn-secondary btn-lg" style="width: 200px;">Register</a>
+            </div>
+        </div>
+    }
+
+
+</div>
+

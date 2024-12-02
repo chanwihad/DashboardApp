@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Register";
+}
+
+@if (ViewBag.Error != null)
+{
+    <p style="color:red;">@ViewBag.Error</p>
+}
+@if (ViewBag.Success != null)
+{
+    <p style="color:green;">@ViewBag.Success</p>
+}
+
+<div class="register-container">
+    <div class="register-card">
+        <!-- Form Register -->
+        <div class="register-form">
+            <h1>CREATE ACCOUNT</h1>
+            <form method="post" asp-action="Register">
+                <input type="text" name="Username" id="Username" placeholder="Username" required />
+                <input type="text" name="FullName" id="FullName" placeholder="Full Name" required />
+                <input type="email" name="Email" id="Email" placeholder="Email" required />
+                <input type="password" name="Password" id="Password" placeholder="Password" required />
+                <input type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="Confirm Password" required />
+
+                <button type="submit" class="login-btn">REGISTER</button>
+                <a href="/Auth/Login" class="login-forgot-link">Already have an account? Sign In</a>
+            </form>
+            
+                <p>@ViewBag.ErrorMessage</p>
+            
+        </div>
+
+        <!-- Banner -->
+        <div class="login-banner">
+            <img src="~/images/register.png" alt="Register Banner" />
+        </div>
+    </div>
+</div>

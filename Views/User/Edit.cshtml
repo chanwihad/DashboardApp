@@ -1,0 +1,75 @@
+@model DashboardApp.Models.User
+
+<h1>Edit User</h1>
+<form method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="form-group">
+        <label for="UserName">User Name</label>
+        <input type="text" class="form-control" id="Username" name="Username" value="@Model.Username" required />
+    </div>
+    <div class="form-group">
+        <label for="FullName">Full Name</label>
+        <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName" required />
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required />
+    </div>
+    <div class="form-group">
+        <label for="RoleName">Role</label>
+        <select class="form-control" id="RoleId" name="RoleId" required>
+            <option value="">-- Select Role --</option>
+            @foreach (var role in ViewBag.Roles as List<Role>)
+            {
+                if (role.Id == Model.RoleId)
+                {
+                    <option value="@role.Id" selected>@role.Name</option>
+                }
+                else
+                {
+                    <option value="@role.Id">@role.Name</option>
+                }
+            }
+        </select>
+
+    </div>
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <input type="password" class="form-control" id="Password" name="Password" />
+        <small class="form-text text-muted">Leave blank if you do not want to change the password.</small>
+    </div>
+    <div class="form-group">
+        <label for="Status">Status</label>
+        <select class="form-control" id="Status" name="Status" required>
+            @if (Model.Status == "Active")
+            {
+                <option value="Active" selected>Active</option>
+                <option value="Inactive">Inactive</option>
+            }
+            else if (Model.Status == "Inactive")
+            {
+                <option value="Active">Active</option>
+                <option value="Inactive" selected>Inactive</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="MaxRetry">Max Retry</label>
+        <input type="number" class="form-control" id="MaxRetry" name="MaxRetry" value="@Model.MaxRetry" required />
+    </div>
+    <div class="form-group">
+        <label for="Retry">Retry</label>
+        <input type="number" class="form-control" id="Retry" name="Retry" value="@Model.Retry" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="@Url.Action("Index", "User")" class="btn btn-secondary">Cancel</a>
+</form>
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style="color:red;">@ViewBag.ErrorMessage</p>
+}
+@if (ViewBag.Success != null)
+{
+    <p style="color:green;">@ViewBag.Success</p>
+}

@@ -1,0 +1,77 @@
+@model IEnumerable<DashboardApp.Models.UserRequest>
+
+@{
+    ViewData["Title"] = "User List";
+}
+<h1>User List</h1>
+<a href="/User/Create" class="btn btn-primary">Create New User</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th class="text-center">Role</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var users in Model.Select((item, index) => new { Item = item, Index = index + 1 }))
+        {
+            <tr>
+                <td>@users.Index</td>
+                <td>@users.Item.Username</td>
+                <td>@users.Item.FullName</td>
+                <td>@users.Item.Email</td>
+                <td class="text-center">@users.Item.RoleName</td>
+                <td class="text-center">@users.Item.Status</td>
+                <td class="text-center">
+                    <a class="btn btn-success" href="@Url.Action("Edit", new { id = users.Item.Id })">Edit</a> 
+                    <a href="@Url.Action("Delete", new { id = users.Item.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                </td>
+            </tr>
+        }
+        
+    </tbody>
+</table>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>CanView</td>
+        <td>@ViewBag.CanView</td>
+    </tr>
+    <tr>
+        <td>CanCreate</td>
+        <td>@ViewBag.CanCreate</td>
+    </tr>
+    <tr>
+        <td>CanUpdate</td>
+        <td>@ViewBag.CanUpdate</td>
+    </tr>
+    <tr>
+        <td>CanDelete</td>
+        <td>@ViewBag.CanDelete</td>
+    </tr>
+    <tr>
+        <td>Username</td>
+        <td>@ViewBag.Username</td>
+    </tr>
+    <tr>
+        <td>ClientId</td>
+        <td>@ViewBag.ClientId</td>
+    </tr>
+    <tr>
+        <td>UserMenus</td>
+        <td>@ViewBag.UserMenus</td>
+    </tr>
+    <tr>
+        <td>Token</td>
+        <td>@ViewBag.Token</td>
+    </tr>
+</table>

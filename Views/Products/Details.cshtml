@@ -1,0 +1,26 @@
+@model DashboardApp.Models.Product
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header text-white" style="background-color: #8b5e3c; color: white;">
+                    <h3 class="mb-0">Product Details</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5><strong>Name:</strong></h5>
+                        <p class="text-muted">@Model.Name</p>
+                    </div>
+                    <div class="mb-3">
+                        <h5><strong>Price:</strong></h5>
+                        <p class="text-muted">Rp @string.Format("{0:0.00}", Model.Price)</p>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

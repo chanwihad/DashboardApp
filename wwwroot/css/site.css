@@ -1,0 +1,303 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Namespace khusus login */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 20px; 
+  box-sizing: border-box; 
+  height: calc(100vh - 50px);
+}
+
+.login-card {
+  display: flex;
+  width: 800px;
+  height: 400px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.login-form {
+  width: 50%;
+  padding: 40px;
+  background-color: #ffffff;
+  margin-top: 0;
+}
+
+.login-form h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.login-captcha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-captcha img {
+  height: 50px;
+  width: auto;
+  border: 1px solid #ccc;
+}
+
+.login-btn {
+  background-color: #8b5e3c;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-btn:hover {
+  background-color: #70482d;
+}
+
+.login-forgot-link {
+  display: block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.login-forgot-link:hover {
+  text-decoration: underline;
+}
+
+.login-banner {
+  width: 50%; /* Banner hanya mengisi setengah halaman */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Agar bagian gambar yang keluar dari banner tidak terlihat */
+  position: relative; /* Dibutuhkan untuk mengatur posisi gambar */
+  height: 100%; /* Banner mengisi penuh tinggi div */
+}
+
+.login-banner img {
+  position: absolute; /* Membuat gambar sepenuhnya mengisi container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Gambar mengisi lebar penuh banner */
+  height: 100%; /* Gambar mengisi tinggi penuh banner */
+  object-fit: cover; /* Memastikan gambar memenuhi area tanpa melar */
+}
+
+.login-banner h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.login-banner p {
+  font-size: 16px;
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 20px; 
+  box-sizing: border-box; 
+  height: calc(100vh - 50px);
+}
+
+.register-card {
+  display: flex;
+  width: 800px;
+  height: 500px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.register-form {
+  width: 50%;
+  padding: 40px;
+  background-color: #ffffff;
+  margin-top: 0;
+}
+
+.register-form h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.register-login-link {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-login-link:hover {
+  text-decoration: underline;
+}
+
+.register-banner {
+  flex: 1;
+  background-color: #007bff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.register-banner img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.forgot-password-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f4f4f9; /* Latar belakang */
+}
+
+.forgot-password-card {
+  width: 500px; /* Sesuaikan lebar */
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.forgot-password-card h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  flex: 1; /* Input menyesuaikan lebar */
+  padding: 10px;
+  margin-right: 10px; /* Jarak antara input dan tombol */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.input-group button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.input-group button:hover {
+  background-color: #218838;
+}
+
+small {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #666;
+}
+
+.btn-back {
+  width: 100%;
+  background-color: #8b5e3c;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-back:hover {
+  background-color: #62432b;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.success {
+  color: green;
+  font-size: 14px;
+  margin-top: 10px;
+}

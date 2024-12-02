@@ -1,0 +1,11 @@
+@model DashboardApp.Models.Product
+
+<h1>Delete Product</h1>
+<p>Are you sure you want to delete the following product?</p>
+<p><strong>Name:</strong> @Model.Name</p>
+<p><strong>Price:</strong> @Model.Price</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+</form>
