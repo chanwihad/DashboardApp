@@ -15,7 +15,7 @@ namespace DashboardApp.Controllers
             _permissionHelper = permissionHelper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchQuery = "")
         {
             if (!_permissionHelper.CheckLogin())
             {
@@ -27,11 +27,12 @@ namespace DashboardApp.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, "Access denied");
             }
 
-            var menus = await _menuApiClient.GetMenus();
+            var menus = await _menuApiClient.GetMenus(searchQuery);
             if (menus == null)
             {
                 throw new InvalidOperationException("Menu data is null.");
             }
+            ViewData["Search"] = searchQuery;  
             return View(menus);
         }
 

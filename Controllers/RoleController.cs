@@ -17,7 +17,7 @@ namespace DashboardApp.Controllers
             _permissionHelper = permissionHelper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchQuery = "")
         {
             if (!_permissionHelper.CheckLogin())
             {
@@ -29,7 +29,7 @@ namespace DashboardApp.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, "Access denied");
             }
 
-            var roles = await _roleApiClient.GetRoles();
+            var roles = await _roleApiClient.GetRoles(searchQuery);
             if (roles == null)
             {
                 throw new InvalidOperationException("Roles data is null.");
@@ -50,7 +50,7 @@ namespace DashboardApp.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, "Access denied");
             }
 
-            var menus = await _menuApiClient.GetMenus();
+            var menus = await _menuApiClient.GetMenus("");
 
             ViewBag.Menus = menus;
             return View();
@@ -101,7 +101,7 @@ namespace DashboardApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            var menus = await _menuApiClient.GetMenus();
+            var menus = await _menuApiClient.GetMenus("");
 
             ViewBag.Menus = menus;
             
@@ -134,7 +134,8 @@ namespace DashboardApp.Controllers
                     return View("Error");
                 }
             }
-            ViewBag.Menus = await _menuApiClient.GetMenus(); 
+            var coba = "";
+            ViewBag.Menus = await _menuApiClient.GetMenus(coba); 
             // ViewBag.ErrorMessage = model.Description;
             return View(model);
         }

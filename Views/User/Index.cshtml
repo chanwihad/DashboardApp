@@ -4,6 +4,18 @@
     ViewData["Title"] = "User List";
 }
 <h1>User List</h1>
+
+<form method="get">
+    <div class="d-flex w-100 mb-3">
+        <div class="flex-grow-1">
+            <input type="text" class="form-control" id="searchQuery" name="searchQuery" value="@ViewData["searchQuery"]" placeholder="Search">
+        </div>
+        <div class="ms-3">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
 <a href="/User/Create" class="btn btn-primary">Create New User</a>
 <table class="table table-striped">
     <thead>
@@ -35,43 +47,4 @@
         }
         
     </tbody>
-</table>
-
-<table class="table table-bordered">
-    <tr>
-        <th>Key</th>
-        <th>Value</th>
-    </tr>
-    <tr>
-        <td>CanView</td>
-        <td>@ViewBag.CanView</td>
-    </tr>
-    <tr>
-        <td>CanCreate</td>
-        <td>@ViewBag.CanCreate</td>
-    </tr>
-    <tr>
-        <td>CanUpdate</td>
-        <td>@ViewBag.CanUpdate</td>
-    </tr>
-    <tr>
-        <td>CanDelete</td>
-        <td>@ViewBag.CanDelete</td>
-    </tr>
-    <tr>
-        <td>Username</td>
-        <td>@ViewBag.Username</td>
-    </tr>
-    <tr>
-        <td>ClientId</td>
-        <td>@ViewBag.ClientId</td>
-    </tr>
-    <tr>
-        <td>UserMenus</td>
-        <td>@ViewBag.UserMenus</td>
-    </tr>
-    <tr>
-        <td>Token</td>
-        <td>@ViewBag.Token</td>
-    </tr>
 </table>

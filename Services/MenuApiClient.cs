@@ -29,10 +29,10 @@ namespace DashboardApp.Services
             _clientId = _httpContextAccessor.HttpContext.Session.GetString("ClientId");
         }
 
-        public async Task<List<Menu>> GetMenus()
+        public async Task<List<Menu>> GetMenus(string searchQuery = "")
         {
             AddSecurityHeaders("GET", "api/menu", "");
-            var response = await _httpClient.GetFromJsonAsync<List<Menu>>("api/menu");
+            var response = await _httpClient.GetFromJsonAsync<List<Menu>>($"api/menu?searchQuery={searchQuery}");
             return response;
         }
 

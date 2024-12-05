@@ -37,10 +37,10 @@ namespace DashboardApp.Services
             return response;
         }
 
-        public async Task<List<UserRequest>> GetUsers()
+        public async Task<List<UserRequest>> GetUsers(string searchQuery = "")
         {
             AddSecurityHeaders("GET", "api/user", "");
-            var response = await _httpClient.GetFromJsonAsync<List<UserRequest>>("api/user");
+            var response = await _httpClient.GetFromJsonAsync<List<UserRequest>>($"api/user?searchQuery={searchQuery}");
             return response;
         }
 

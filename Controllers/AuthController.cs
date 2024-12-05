@@ -16,6 +16,7 @@ public class AuthController : Controller
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
     private readonly AuthApiClient _authApiClient;
+    private static string? _generatedCode;
 
     public AuthController(IHttpClientFactory httpClientFactory, HttpClient httpClient, IConfiguration configuration, AuthApiClient authApiClient)
     {
@@ -37,10 +38,10 @@ public class AuthController : Controller
         {
             return Redirect("/");
         }
-
-        return View();
+        
+        return Redirect("/");
+        // return View();
     }
-
 
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
@@ -107,15 +108,33 @@ public class AuthController : Controller
             return Redirect("/");
         }
 
-        var isChanged = await _authApiClient.ChangePasswordAsync(model.CurrentPassword, model.NewPassword);
-
-        if (isChanged)
+        if(model.NewPassword == model.CurrentPassword)
         {
-            return Redirect("/");
+            ViewBag.Error = "New password and old password cannot be identical.";
+            return View(model);
         }
 
-        ViewBag.ErrorMessage = "Invalid change passord credentials.";
-        return View();
+        if(model.NewPassword != model.ConfirmNewPassword)
+        {
+            ViewBag.Error = "Password do not match. Please try again";
+            return View(model);
+        }
+
+        try
+        {
+            var response = await _authApiClient.ChangePasswordAsync(model);
+            // ViewBag.data = response;
+            // ViewBag.Current = model.CurrentPassword; 
+            // ViewBag.New = model.NewPassword; 
+            // ViewBag.Confirm = model.ConfirmNewPassword; 
+            return Redirect("/");
+            // return View(model);
+        }
+        catch (Exception ex)
+        {
+            ViewBag.Error = "Failed change new password.";
+            return View(model);
+        }
     }
 
     public IActionResult ForgetPassword() 
@@ -127,23 +146,82 @@ public class AuthController : Controller
         return View();
     }
 
+    // [HttpPost]
+    // public async Task<IActionResult> ForgetPassword(ResetPasswordModel model)
+    // {
+    //     if (checkLogin())
+    //     {
+    //         return Redirect("/");
+    //     }
+
+    //     var isForgot = await _authApiClient.ForgotPasswordAsync(model.Email);
+
+    //     if (isForgot)
+    //     {
+    //         return Redirect("/");
+    //     }
+
+    //     ViewBag.ErrorMessage = "Invalid login credentials.";
+    //     return View();
+    // }
+
     [HttpPost]
-    public async Task<IActionResult> ForgetPassword(ResetPasswordModel model)
+    public async Task<IActionResult> SendVerificationCode(string email)
     {
-        if (checkLogin())
+        if (string.IsNullOrEmpty(email))
         {
-            return Redirect("/");
+            TempData["Error"] = "Email is required.";
+            return Redirect("/Auth/ForgetPassword");
         }
 
-        var isForgot = await _authApiClient.ForgotPasswordAsync(model.Email);
+        // var user = await _authApiClient.GetUserByEmailAsync(email);
+        // if (user == null)
+        // {
+        //     ViewBag.Error = "Email is not registered.";
+        //     return View("ForgotPassword");
+        // }
 
-        if (isForgot)
+        // var verificationCode = _verificationCodeService.GenerateCode();
+        // await _verificationCodeService.SaveCodeAsync(email, verificationCode);
+        // await _emailService.SendEmailAsync(email, "Your Verification Code", $"Your code is: {verificationCode}");
+
+        _generatedCode = new Random().Next(100000, 999999).ToString();
+        TempData["Success"] = $"Verification code sent! (Code: {_generatedCode})";
+        return Redirect("/Auth/ForgetPassword");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> VerifyCode(string verificationCode)
+    {
+        // if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(verificationCode))
+        // {
+        //     ViewBag.Error = "Email and Verification Code are required.";
+        //     return View("ForgotPassword");
+        // }
+
+        // var isValidCode = await _verificationCodeService.ValidateCodeAsync(email, verificationCode);
+        // if (!isValidCode)
+        // {
+        //     ViewBag.Error = "Invalid verification code.";
+        //     return View("ForgotPassword");
+        // }
+
+        // // Jika valid, redirect ke halaman untuk reset password
+        // return RedirectToAction("ResetPassword", new { email });
+        if (string.IsNullOrEmpty(verificationCode))
         {
-            return Redirect("/");
+            TempData["Error"] = "Verification code is required!";
+            return Redirect("/Auth/ForgetPassword");
         }
 
-        ViewBag.ErrorMessage = "Invalid login credentials.";
-        return View();
+        if (verificationCode != _generatedCode)
+        {
+            TempData["Error"] = "Invalid verification code!";
+            return Redirect("/Auth/ForgetPassword");
+        }
+
+        TempData["Success"] = "Verification successful!";
+        return Redirect("/Auth/Login");
     }
 
 

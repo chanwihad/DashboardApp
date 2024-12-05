@@ -29,10 +29,10 @@ namespace DashboardApp.Services
             _clientId = _httpContextAccessor.HttpContext.Session.GetString("ClientId");
         }
 
-        public async Task<List<Role>> GetRoles()
+        public async Task<List<Role>> GetRoles(string searchQuery = "")
         {
             AddSecurityHeaders("GET", "api/role", "");
-            var response = await _httpClient.GetFromJsonAsync<List<Role>>("api/role");
+            var response = await _httpClient.GetFromJsonAsync<List<Role>>($"api/role?searchQuery={searchQuery}");
             return response;
         }
 

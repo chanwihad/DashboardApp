@@ -20,7 +20,7 @@ namespace DashboardApp.Controllers
         _permissionHelper = permissionHelper;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchQuery = "")
     {
         if (!_permissionHelper.CheckLogin())
         {
@@ -31,17 +31,8 @@ namespace DashboardApp.Controllers
         {
             return StatusCode(StatusCodes.Status403Forbidden, "Access denied");
         }
-        var session = _httpContextAccessor.HttpContext.Session;
-
-        ViewBag.CanView = session.GetString("CanView");
-        ViewBag.CanCreate = session.GetString("CanCreate");
-        ViewBag.CanUpdate = session.GetString("CanUpdate");
-        ViewBag.CanDelete = session.GetString("CanDelete");
-        ViewBag.Username = session.GetString("Username");
-        ViewBag.ClientId = session.GetString("ClientId");
-        ViewBag.UserMenus = session.GetString("UserMenus");
-        ViewBag.Token = session.GetString("Token");
-        var users = await _userApiClient.GetUsers();
+        
+        var users = await _userApiClient.GetUsers(searchQuery);
         return View(users);
     }
 

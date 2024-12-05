@@ -1,9 +1,11 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using DashboardApp.Models;
 
 namespace DashboardApp.Services
@@ -12,12 +14,18 @@ namespace DashboardApp.Services
     public class AuthApiClient
     {
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
+        private readonly string _clientId;  
+        private readonly string _secretKey;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthApiClient(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        public AuthApiClient(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
+            _configuration = configuration;
+            _secretKey = _configuration["ApiSettings:SecretKey"];
             _httpContextAccessor = httpContextAccessor;
+            _clientId = _httpContextAccessor.HttpContext.Session.GetString("ClientId");
         }
 
         public async Task<bool> RegisterAsync(string username, string fullName, string email, string password)
@@ -71,25 +79,15 @@ namespace DashboardApp.Services
             return false;
         }
 
-        public async Task<bool> ChangePasswordAsync(string oldPassword, string newPassword)
+        public async Task<HttpResponseMessage> ChangePasswordAsync(ChangePasswordModel model)
         {
-            var token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var body = JsonSerializer.Serialize(model);
+            AddSecurityHeaders("POST", "api/auth/change-password", body);
+            
+            // var response = await _httpClient.PostAsJsonAsync("http://localhost:5117/api/auth/change-password", model);
+            var response = await _httpClient.PostAsJsonAsync("http://localhost:5117/api/auth/change-password", model);
 
-            if (string.IsNullOrEmpty(token))
-                throw new UnauthorizedAccessException("User is not logged in.");
-
-            var changePasswordModel = new
-            {
-                CurrentPassword = oldPassword,
-                NewPassword = newPassword
-            };
-
-            var content = new StringContent(JsonSerializer.Serialize(changePasswordModel), Encoding.UTF8, "application/json");
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-            var response = await _httpClient.PostAsync("http://localhost:5117/api/auth/change-password", content);
-
-            return response.IsSuccessStatusCode;
+            return response;
         }
 
         public async Task<bool> ForgotPasswordAsync(string email)
@@ -106,6 +104,26 @@ namespace DashboardApp.Services
             return response.IsSuccessStatusCode;
         }
 
+        private string GenerateSignature(string method, string rawUrl, string clientId, string timeStamp, string body)
+        {
+            string strToSign = $"{method}:{rawUrl}:{clientId}:{timeStamp}:{body}";
+            using (var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(_secretKey)))
+            {
+                var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(strToSign));
+                return Convert.ToBase64String(hash);
+            }
+        }
+
+        private void AddSecurityHeaders(string method, string rawUrl, string body)
+        {
+            var timeStamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            var signature = GenerateSignature(method, rawUrl, _clientId, timeStamp, body);
+
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("X-Client-ID", _clientId);
+            _httpClient.DefaultRequestHeaders.Add("X-Time-Stamp", timeStamp);
+            _httpClient.DefaultRequestHeaders.Add("X-Signature", signature);
+        }
 
     }
 }
