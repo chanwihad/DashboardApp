@@ -123,12 +123,7 @@ public class AuthController : Controller
         try
         {
             var response = await _authApiClient.ChangePasswordAsync(model);
-            // ViewBag.data = response;
-            // ViewBag.Current = model.CurrentPassword; 
-            // ViewBag.New = model.NewPassword; 
-            // ViewBag.Confirm = model.ConfirmNewPassword; 
             return Redirect("/");
-            // return View(model);
         }
         catch (Exception ex)
         {
@@ -146,25 +141,6 @@ public class AuthController : Controller
         return View();
     }
 
-    // [HttpPost]
-    // public async Task<IActionResult> ForgetPassword(ResetPasswordModel model)
-    // {
-    //     if (checkLogin())
-    //     {
-    //         return Redirect("/");
-    //     }
-
-    //     var isForgot = await _authApiClient.ForgotPasswordAsync(model.Email);
-
-    //     if (isForgot)
-    //     {
-    //         return Redirect("/");
-    //     }
-
-    //     ViewBag.ErrorMessage = "Invalid login credentials.";
-    //     return View();
-    // }
-
     [HttpPost]
     public async Task<IActionResult> SendVerificationCode(string email)
     {
@@ -174,53 +150,52 @@ public class AuthController : Controller
             return Redirect("/Auth/ForgetPassword");
         }
 
-        // var user = await _authApiClient.GetUserByEmailAsync(email);
-        // if (user == null)
-        // {
-        //     ViewBag.Error = "Email is not registered.";
-        //     return View("ForgotPassword");
-        // }
+        var response = await _authApiClient.SendVerificationCode(email);
 
-        // var verificationCode = _verificationCodeService.GenerateCode();
-        // await _verificationCodeService.SaveCodeAsync(email, verificationCode);
-        // await _emailService.SendEmailAsync(email, "Your Verification Code", $"Your code is: {verificationCode}");
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<VerificationRequest>();
+            if (result != null)
+            {
+                string verificationCode = result.Code;
+                string verificationMail = result.Email;
+                TempData["Success"] = $"Verification code sent! (Code: {verificationCode})";
+                TempData["Mail"] = $"Verification mail sent! (Mail: {verificationMail})";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to parse verification code.";
+            }
+        }
+        else
+        {
+            TempData["Error"] = await response.Content.ReadAsStringAsync();
+        }
 
-        _generatedCode = new Random().Next(100000, 999999).ToString();
-        TempData["Success"] = $"Verification code sent! (Code: {_generatedCode})";
+
         return Redirect("/Auth/ForgetPassword");
     }
 
     [HttpPost]
-    public async Task<IActionResult> VerifyCode(string verificationCode)
+    public async Task<IActionResult> VerifyCode(VerificationRequest model)
     {
-        // if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(verificationCode))
-        // {
-        //     ViewBag.Error = "Email and Verification Code are required.";
-        //     return View("ForgotPassword");
-        // }
-
-        // var isValidCode = await _verificationCodeService.ValidateCodeAsync(email, verificationCode);
-        // if (!isValidCode)
-        // {
-        //     ViewBag.Error = "Invalid verification code.";
-        //     return View("ForgotPassword");
-        // }
-
-        // // Jika valid, redirect ke halaman untuk reset password
-        // return RedirectToAction("ResetPassword", new { email });
-        if (string.IsNullOrEmpty(verificationCode))
+        if (string.IsNullOrEmpty(model.Code))
         {
             TempData["Error"] = "Verification code is required!";
             return Redirect("/Auth/ForgetPassword");
         }
 
-        if (verificationCode != _generatedCode)
+        var response = await _authApiClient.VerifyCode(model);
+
+        if (response.IsSuccessStatusCode)
         {
-            TempData["Error"] = "Invalid verification code!";
-            return Redirect("/Auth/ForgetPassword");
+            var result = await response.Content.ReadFromJsonAsync<VerificationValidRequest>();
+            TempData["Valid"] = "Verification successful!";
+            TempData["ValidEmail"] = result.Email;
+            return Redirect("/Auth/ForgetPassword");    
+
         }
 
-        TempData["Success"] = "Verification successful!";
         return Redirect("/Auth/Login");
     }
 
