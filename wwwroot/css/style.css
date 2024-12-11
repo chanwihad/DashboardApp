@@ -1,6 +1,6 @@
 /* Sidebar Styling */
 .sidebar {
-    background-color: #2A3F54; /* Warna biru sidebar */
+    background-color: #274486; /* Warna biru sidebar */
     color: white;
     width: 250px;
     position: fixed;
@@ -19,7 +19,7 @@
 /* Styling untuk logo dan role di sidebar */
 .sidebar-header {
     padding: 15px;
-    background-color: #2A3F54;
+    background-color: #274486;
 }
 
 .sidebar-header img {
@@ -46,7 +46,7 @@
 
 /* Styling untuk menu dropdown di sidebar */
 .nav-item.dropdown .dropdown-menu {
-    background-color: #2A3F54; /* Warna biru sidebar */
+    background-color: #274486; /* Warna biru sidebar */
     left: 100%; /* Memindahkan dropdown ke kanan sidebar */
     margin-left: 10px; /* Memberi jarak sedikit ke kanan */
     padding-left: 15px; /* Menambah padding kiri untuk memberi ruang antara teks dan sisi kiri dropdown */
@@ -104,12 +104,12 @@ hr.text-white {
     cursor: pointer;
     font-size: 30px;
     color: white;
-    background-color: #2A3F54;
+    background-color: #274486;
     border: none;
 }
 
 .navbar-custom {
-    background-color: #2A3F54 !important; /* Mengubah warna latar belakang navbar */
+    background-color: #274486 !important; /* Mengubah warna latar belakang navbar */
     width: 100%;
     padding-left: 0 !important;
     padding-right: 0 !important;

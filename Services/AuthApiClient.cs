@@ -99,10 +99,19 @@ namespace DashboardApp.Services
         
         public async Task<HttpResponseMessage> VerifyCode(VerificationRequest model)
         {
-            var response = await _httpClient.PostAsJsonAsync("http://localhost:5117/api/auth/verif-code", model);
+            var response = await _httpClient.PostAsJsonAsync("http://localhost:5117/api/auth/verify-code", model);
 
             return response;
         }
+
+        public async Task<HttpResponseMessage> ResetPassword(NewPassword model)
+        {
+            var response = await _httpClient.PostAsJsonAsync("http://localhost:5117/api/auth/reset-password", model);
+
+            return response;
+        }
+
+        
 
         public async Task<bool> ForgotPasswordAsync(string email)
         {

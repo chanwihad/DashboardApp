@@ -5,6 +5,10 @@
 <div class="login-container">
     <div class="login-card">
         <div class="login-form">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            } 
             <h1>SIGN IN</h1>
             <form method="post" asp-action="Login">
                 <input type="text" name="Username" placeholder="Username" required />
@@ -20,7 +24,7 @@
             }
         </div>
         <div class="login-banner">
-            <img src="~/images/login.png" alt="Login Banner" />
+            <img src="~/images/LogoBiru.png" alt="Login Banner" />
         </div>
     </div>
 </div>

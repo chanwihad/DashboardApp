@@ -160,7 +160,7 @@ public class AuthController : Controller
                 string verificationCode = result.Code;
                 string verificationMail = result.Email;
                 TempData["Success"] = $"Verification code sent! (Code: {verificationCode})";
-                TempData["Mail"] = $"Verification mail sent! (Mail: {verificationMail})";
+                TempData["Mail"] = $"{email}";
             }
             else
             {
@@ -191,14 +191,44 @@ public class AuthController : Controller
         {
             var result = await response.Content.ReadFromJsonAsync<VerificationValidRequest>();
             TempData["Valid"] = "Verification successful!";
+            TempData["Success"] = "Verification successful"; 
             TempData["ValidEmail"] = result.Email;
             return Redirect("/Auth/ForgetPassword");    
-
         }
 
         return Redirect("/Auth/Login");
     }
 
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(NewPassword model)
+    {
+        if (string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.ConfirmPassword))
+        {
+            TempData["Error"] = "Password is required!";
+            TempData["Valid"] =  "Verification retry!";
+            TempData["ValidEmail"] = model.Email;
+            return Redirect("/Auth/ForgetPassword");
+        }
+
+        if(model.Password != model.ConfirmPassword)
+        {
+            TempData["Error"] = "Confirm Password must identical!";
+            TempData["Valid"] =  "Verification retry!";
+            TempData["ValidEmail"] = model.Email;
+            return Redirect("/Auth/ForgetPassword");
+        }
+
+        var response = await _authApiClient.ResetPassword(model);
+
+        if (response.IsSuccessStatusCode)
+        {
+            TempData["Success"] = "Reset Password Success!";
+            return Redirect("/Auth/Login");
+        }
+        TempData["Error"] = "Reset Password Failed. Try again!";
+        return Redirect("/Auth/ForgetPassword");
+
+    }
 
     [HttpPost]
     public async Task<IActionResult> Logout()
